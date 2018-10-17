@@ -2,10 +2,15 @@ const cfnDeploy = require('cfn-deploy');
 
 module.exports = (stackname = '', args) => new Promise((resolve, reject) => {
   const newArgs = args;
-  newArgs.stackname = stackname;
+  newArgs.stackName = stackname;
+
+  // Make sure parameters are an array
+  if (!Array.isArray(newArgs.parameters)) {
+    newArgs.parameters = [newArgs.parameters];
+  }
 
   // Add FeatureStack parameter
-  newArgs.parameters = newArgs.parameters.concat([{ FeatureStack: true }]);
+  newArgs.parameters = newArgs.parameters.concat([{ IsFeatureStack: 'true' }]);
 
   // Run deploy
   const eventStream = cfnDeploy(newArgs);
@@ -17,7 +22,6 @@ module.exports = (stackname = '', args) => new Promise((resolve, reject) => {
     resolve();
   });
   eventStream.on('ERROR', (err) => {
-    console.log('Deploy error.', err.message);
-    reject(new Error(err.message));
+    reject(new Error(err));
   });
 });
