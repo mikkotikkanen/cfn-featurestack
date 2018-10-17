@@ -6,12 +6,29 @@ const index = require('../index');
 
 
 yargs
-  .version()
-  .help();
-  // .demandOption();
+  .version(false) // Set custom version option to avoid "[boolean]" flag
+  .option('version', {
+    describe: 'Show version number',
+  })
+  .help(false) // Set custom help option to avoid "[boolean]" flag
+  .option('help', {
+    describe: 'Show help',
+  });
 
-// Remove "[boolean]" texts from "help" and "version" options in help view
-yargs.getOptions().boolean.splice(-2);
+const args = {
+  parameters: yargs.argv.parameters,
+};
+
+
+// Show help and version
+if (yargs.argv.help) {
+  yargs.showHelp('log');
+  process.exit();
+}
+if (yargs.argv.version) {
+  console.log(pckg.version);
+  process.exit();
+}
 
 
 // Set update notifier
@@ -23,5 +40,4 @@ updateNotifier({
 
 
 // Call the library with cli arguments
-const args = yargs.argv;
-const events = index(args);
+index(args);
