@@ -6,6 +6,9 @@ const index = require('../index');
 
 
 yargs
+  .option('template', {
+    describe: 'Path to template file',
+  })
   .version(false) // Set custom version option to avoid "[boolean]" flag
   .option('version', {
     describe: 'Show version number',
@@ -14,10 +17,6 @@ yargs
   .option('help', {
     describe: 'Show help',
   });
-
-const args = {
-  parameters: yargs.argv.parameters,
-};
 
 
 // Show help and version
@@ -40,4 +39,4 @@ updateNotifier({
 
 
 // Call the library with cli arguments
-index(args);
+index(yargs.argv);
