@@ -1,19 +1,11 @@
-# cfn-deploy
+# cfn-featurestack
 
-Simple utility for AWS CloudFormation deployments
-
-
-## Motivation
-- Serverless framework seems like overkill just for CloudFormation deployments
-- Modules like aws-cfm-utils do weird stuff like ASG toggling which is not kosher
-- `aws-cli cloudformation deploy` doesn't allow passing CloudFormation parameter files
-- Need for full spectrum of use in `package.json` scripts
-- Need for fully programmatic & customized use in other modules
+Simple utility for creating AWS CloudFormation featurestacks for feature branches
 
 
 # Configuration
 
-cfn-deploy will by default use any locally pre-configured AWS account. You can pre-configure your
+cfn-featurestack will by default use any locally pre-configured AWS account. You can pre-configure your
 account by any of the following methods:
 
 - With [aws-cli](https://aws.amazon.com/cli/), by running `aws-cli configure` (Recommended for
@@ -25,6 +17,40 @@ variables (Recommended for server/container environments)
 Additionally, you can define your AWS access and secret keys as parameters, but this is not
 recommended as they A) can end to version control or B) will stay readable in logs.
 
+
+# Usage
+
+cfn-featurestack will add `IsFeatureStack` parameter to your stack parameters, which enables you
+to set conditions for CloudFormation not to create specific resources for featurestacks (such as
+CloudFront distributions and Route53 domain names).
+
+## Preparing CloudFormation template
+
+1. Add `IsFeatureStack` parameter and conditions for it.
+
+```yaml
+Parameters:
+  IsFeatureStack:
+    Description: "Is this a feature stack. (Defaults to \"false\")"
+    Type: String
+    Default: "false"
+
+Conditions:
+  IsNotFreatureStack: !Equals [ !Ref IsFeatureStack, "false" ]
+  IsFreatureStack: !Equals [ !Ref IsFeatureStack, "true" ]
+```
+
+2. Add `IsNotFeatureStack` to any resource that must be unique across stacks and cannot be
+duplicated to feature stacks, such as CloudFront distributions and Route53 domain names.
+
+```yaml
+Resources:
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Condition: IsNotFeatureStack
+    Properties:
+      # ...
+```
 
 
 # Command line use
