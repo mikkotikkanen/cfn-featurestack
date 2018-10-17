@@ -1,0 +1,35 @@
+Parameters:
+  S3BucketName:
+    Description: "S3 Bucket name"
+    Type: String
+  DummyParam:
+    Description: "Dummy parameter"
+    Type: String
+  OverwritableParam:
+    Description: "Parameter for testing overrides"
+    Type: String
+  ParamSource:
+    Description: "Source where the parameters came from"
+    Type: String
+  IsFeatureStack:
+    Description: "Is the current stack a feature stack"
+    Type: String
+    Default: "false"
+
+Conditions:
+  IsNotFreatureStack: !Equals [ !Ref IsFeatureStack, "false" ]
+  IsFreatureStack: !Equals [ !Ref IsFeatureStack, "true" ]
+
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "${AWS::StackName}-${S3BucketName}"
+
+  S3BucketNotForFeatureBranch:
+    Type: AWS::S3::Bucket
+    Condition: IsNotFreatureStack
+
+  S3BucketForFeatureBranch:
+    Type: AWS::S3::Bucket
+    Condition: IsFreatureStack
