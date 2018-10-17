@@ -25,11 +25,9 @@ module.exports = (args) => {
     throw new Error('Could not resolve project name');
   }
 
-  const stackname = `${projectname}-${branchname}`;
-
   new Promise(resolve => resolve())
     .then(() => gitStatus())
     .then((newBranchname) => { branchname = newBranchname; })
-    .then(() => deployStack(stackname, args))
+    .then(() => deployStack(`${projectname}-${branchname}`, args))
     .catch(err => console.error('Error:', err.message));
 };
