@@ -1,33 +1,22 @@
-const fs = require('fs');
-const path = require('path');
-const gitStatus = require('./libs/gitStatus');
 const deployStack = require('./libs/deployStack');
+const getProjectname = require('./libs/getProjectname');
+const getBranchname = require('./libs/git/getBranchname');
 
 module.exports = (args) => {
+  let projectname = '';
   let branchname = '';
 
-  // Resolve project name
-  let projectname = '';
-  if (fs.existsSync('./package.json')) {
-    const stringPackageJson = fs.readFileSync('./package.json', { encoding: 'utf8' });
-    try {
-      const packageJson = JSON.parse(stringPackageJson);
-      projectname = packageJson.name;
-    } catch (err) {
-      throw err;
-    }
-  } else {
-    projectname = path.basename(process.cwd());
-  }
-
-  // Make sure we have everything
-  if (!projectname) {
-    throw new Error('Could not resolve project name');
-  }
-
   new Promise(resolve => resolve())
-    .then(() => gitStatus())
+
+    // Resolve project name
+    .then(getProjectname)
+    .then((newProjectname) => { projectname = newProjectname; })
+
+    // Resolve branch name
+    .then(() => getBranchname())
     .then((newBranchname) => { branchname = newBranchname; })
+
+    // Deploy feature stack
     .then(() => deployStack(`${projectname}-${branchname}`, args))
     .catch(err => console.error('Error:', err.message));
 };
