@@ -13,7 +13,7 @@ module.exports = (args) => {
     .then((newProjectname) => { projectname = newProjectname; })
 
     // Resolve branch name
-    .then(() => getBranchname())
+    .then(getBranchname)
     .then((newBranchname) => { branchname = newBranchname; })
 
     // Deploy feature stack
