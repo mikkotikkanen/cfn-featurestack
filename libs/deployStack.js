@@ -2,7 +2,7 @@ const cfnDeploy = require('cfn-deploy');
 
 module.exports = (stackname = '', args) => new Promise((resolve, reject) => {
   const newArgs = args;
-  newArgs.stackName = stackname;
+  newArgs.stackname = stackname;
 
   // Make sure parameters are an array
   if (!Array.isArray(newArgs.parameters)) {
