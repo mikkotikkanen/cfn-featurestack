@@ -1,5 +1,6 @@
 const cfnDeploy = require('cfn-deploy');
-const logger = require('./loggers/deafultLogger');
+const logger = require('./loggers/defaultLogger');
+
 
 module.exports = (stackname = '', args) => new Promise((resolve, reject) => {
   const newArgs = args;
