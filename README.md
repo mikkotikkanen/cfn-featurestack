@@ -58,13 +58,13 @@ Resources:
 ## Install
 
 ```bash
-npm install cfn-deploy -g
+npm install cfn-featurestack -g
 ```
 
 ## Usage
 
 ```bash
-cfn-deploy --stack-name=fancy-stack --template=./cfn/cfn-stack.yaml
+cfn-featurestack --stack-name=fancy-stack --template=./cfn/cfn-stack.yaml
 ```
 
 See [options](#options) for more details.
@@ -76,7 +76,7 @@ See [options](#options) for more details.
 ## Install
 
 ```bash
-npm install cfn-deploy --save-dev
+npm install cfn-featurestack --save-dev
 ```
 
 ## Usage
@@ -86,64 +86,12 @@ Add deploy script to `package.json`:
 ```json
 {
   "scripts": {
-    "deploy": "cfn-deploy --stack-name=fancy-stack --template=./cfn/cfn-stack.yaml"
+    "deploy": "cfn-featurestack --stack-name=fancy-stack --template=./cfn/cfn-stack.yaml"
   }
 }
 ```
 
 See [options](#options) for more details.
-
-
-
-# Programmatic use
-
-## Install
-
-```bash
-npm install cfn-deploy
-```
-
-## Usage
-
-For programmatic use, cfn-deploy returns event stream on initialization, which allows for complete
-customization, down to event logging.
-
-Write your application:
-
-```javascript
-const cfnDeploy = require('cfn-deploy');
-
-const eventStream = cfnDeploy({
-  stackName: 'fancy-stack',
-  template: 'cfn/cfn-stack.yaml',
-});
-
-eventStream.on('EXECUTING_CHANGESET', () => {
-  console.log('Doing the thing...');
-});
-eventStream.on('COMPLETE', () => {
-  console.log('The thing is complete.');
-});
-eventStream.on('ERROR', (err) => {
-  console.log('Aw. Dang. The thing errored.', err.message);
-});
-```
-
-See [options](#options) for more details.
-
-### Available events
-
-| Event                        | When it fires                                  |
-| ---------------------------- | ---------------------------------------------- |
-| LOADING_FILES                | Template & parameters files are being loaded   |
-| VALIDATING_TEMPLATE          | Template is being validated                    |
-| VALIDATING_STACKSTATE        | Stack state is being validated                 |
-| CREATING_CHANGESET           | Changeset is being created                     |
-| EXECUTING_CHANGESET          | Changeset is being executed                    |
-| COMPLETE                     | Deployment is complete                         |
-| ERROR                        | Deployment errored                             |
-| FINALLY                      | All work finished (errored or complete)        |
-
 
 
 # Options
@@ -206,7 +154,7 @@ Valid .json files:
 __Multiple parameters files (command line/package.json scripts)__
 
 ```bash
-cfn-deploy --stack-name=fancy-stack --template=./cfn/cfn-stack.yaml --parameters=./cfn/params1.json --parameters=./cfn/params2.json
+cfn-featurestack --stack-name=fancy-stack --template=./cfn/cfn-stack.yaml --parameters=./cfn/params1.json --parameters=./cfn/params2.json
 ```
 
 __Multiple parameters files (programmatic use)__
