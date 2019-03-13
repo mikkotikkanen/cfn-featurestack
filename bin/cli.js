@@ -68,4 +68,4 @@ updateNotifier({
 
 // Call the library with cli arguments
 const args = yargs.argv;
-const events = lib(args);
+lib(args);
