@@ -17,8 +17,8 @@ Parameters:
     Default: "false"
 
 Conditions:
-  IsNotFreatureStack: !Equals [ !Ref IsFeatureStack, "false" ]
-  IsFreatureStack: !Equals [ !Ref IsFeatureStack, "true" ]
+  IsNotFeatureStack: !Equals [ !Ref IsFeatureStack, "false" ]
+  IsFeatureStack: !Equals [ !Ref IsFeatureStack, "true" ]
 
 Resources:
   S3Bucket:
@@ -28,8 +28,8 @@ Resources:
 
   S3BucketNotForFeatureBranch:
     Type: AWS::S3::Bucket
-    Condition: IsNotFreatureStack
+    Condition: IsNotFeatureStack
 
   S3BucketForFeatureBranch:
     Type: AWS::S3::Bucket
-    Condition: IsFreatureStack
+    Condition: IsFeatureStack

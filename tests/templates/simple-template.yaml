@@ -5,8 +5,8 @@ Parameters:
     Default: "false"
 
 Conditions:
-  IsNotFreatureStack: !Equals [ !Ref IsFeatureStack, "false" ]
-  IsFreatureStack: !Equals [ !Ref IsFeatureStack, "true" ]
+  IsNotFeatureStack: !Equals [ !Ref IsFeatureStack, "false" ]
+  IsFeatureStack: !Equals [ !Ref IsFeatureStack, "true" ]
 
 Resources:
   S3Bucket:

@@ -36,8 +36,8 @@ Parameters:
     Default: "false"
 
 Conditions:
-  IsNotFreatureStack: !Equals [ !Ref IsFeatureStack, "false" ]
-  IsFreatureStack: !Equals [ !Ref IsFeatureStack, "true" ]
+  IsNotFeatureStack: !Equals [ !Ref IsFeatureStack, "false" ]
+  IsFeatureStack: !Equals [ !Ref IsFeatureStack, "true" ]
 ```
 
 2. Add `IsNotFeatureStack` to any resource that must be unique across stacks and cannot be
