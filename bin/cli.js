@@ -1,42 +1,71 @@
 #!/usr/bin/env node
 const yargs = require('yargs');
 const updateNotifier = require('update-notifier');
+const isInstalledGlobally = require('is-installed-globally');
 const pckg = require('../package.json');
-const index = require('../index');
+const lib = require('../index');
 
 
 yargs
   .option('template', {
     describe: 'Path to template file',
   })
-  .version(false) // Set custom version option to avoid "[boolean]" flag
+  .option('parameters', {
+    alias: 'params',
+    describe: 'Path to parameter file or parameter string',
+  })
+  .array('parameters')
+  .option('tags', {
+    describe: 'Path to tags file or tags string',
+  })
+  .array('tags')
+  .option('region', {
+    describe: 'AWS region',
+    default: 'us-east-1',
+  })
+  .option('capabilities', {
+    describe: 'IAM capabilities',
+  })
+  .option('profile', {
+    describe: 'Load profile from shared credentials file',
+  })
+  .option('accesskey', {
+    describe: 'AWS Access Key',
+  })
+  .option('secretkey', {
+    describe: 'AWS Secret Access Key',
+  })
+  .version(false) // Set custom version option to avoid "[boolean]" flag in help
   .option('version', {
     describe: 'Show version number',
   })
-  .help(false) // Set custom help option to avoid "[boolean]" flag
+  .help(false) // Set custom help option to avoid "[boolean]" flag in help
   .option('help', {
     describe: 'Show help',
   });
 
-
-// Show help and version
-if (yargs.argv.help) {
-  yargs.showHelp('log');
-  process.exit();
-}
+// Show help and version manually
 if (yargs.argv.version) {
   console.log(pckg.version);
-  process.exit();
+  process.exit(); /* eslint-disable-line no-process-exit */
+}
+if (yargs.argv.help) {
+  yargs.showHelp('log');
+  process.exit(); /* eslint-disable-line no-process-exit */
 }
 
+// Make sure we have all we need
+yargs.demandOption(['stackname', 'template']);
 
 // Set update notifier
 updateNotifier({
   pkg: pckg,
   updateCheckInterval: 0,
-  // isGlobal: isInstalledGlobally,
+  // @ts-ignore (DefinitelyTyped is missing isGlobal setting)
+  isGlobal: isInstalledGlobally,
 }).notify();
 
 
 // Call the library with cli arguments
-index(yargs.argv);
+const args = yargs.argv;
+const events = lib(args);
