@@ -1,4 +1,5 @@
 const cfnDeploy = require('cfn-deploy');
+const logger = require('./loggers/deafultLogger');
 
 module.exports = (stackname = '', args) => new Promise((resolve, reject) => {
   const newArgs = args;
@@ -20,13 +21,9 @@ module.exports = (stackname = '', args) => new Promise((resolve, reject) => {
 
   // Run deploy
   const eventStream = cfnDeploy(newArgs);
-  eventStream.on('EXECUTING_CHANGESET', () => {
-    console.log('Deploying featurestack...');
-  });
-  eventStream.on('COMPLETE', () => {
-    console.log('Featurestack complete.');
-    resolve();
-  });
+
+  // Set logging
+  logger(eventStream);
   eventStream.on('ERROR', (err) => {
     reject(new Error(err));
   });
