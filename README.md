@@ -64,7 +64,7 @@ npm install cfn-featurestack -g
 ## Usage
 
 ```bash
-cfn-featurestack --stack-name=fancy-stack --template=./cfn/cfn-stack.yaml
+cfn-featurestack --template=./cfn/cfn-stack.yaml
 ```
 
 See [options](#options) for more details.
@@ -86,7 +86,7 @@ Add deploy script to `package.json`:
 ```json
 {
   "scripts": {
-    "deploy": "cfn-featurestack --stack-name=fancy-stack --template=./cfn/cfn-stack.yaml"
+    "deploy": "cfn-featurestack --template=./cfn/cfn-stack.yaml"
   }
 }
 ```
@@ -95,15 +95,6 @@ See [options](#options) for more details.
 
 
 # Options
-
-Command line and package.json options are same, programmatic configuration uses camelCase for
-options (if different, written in parenthesis).
-
-## stack-name
-
-The name associated with the stack
-
-__Note:__ In programmatic use: `stackName`
 
 ## template
 
@@ -151,16 +142,10 @@ Valid .json files:
 }
 ```
 
-__Multiple parameters files (command line/package.json scripts)__
+__Multiple parameters files__
 
 ```bash
-cfn-featurestack --stack-name=fancy-stack --template=./cfn/cfn-stack.yaml --parameters=./cfn/params1.json --parameters=./cfn/params2.json
-```
-
-__Multiple parameters files (programmatic use)__
-
-```javascript
-parameters: ['./cfn/params1.json', './cfn/params2.json'],
+cfn-featurestack --template=./cfn/cfn-stack.yaml --parameters=./cfn/params1.json --parameters=./cfn/params2.json
 ```
 
 
@@ -185,22 +170,14 @@ Load profile from shared credentials file (in `.aws\credentials`)
 
 AWS Access Key
 
-__Note:__ In programmatic use: `accessKey`
-
 ## secret-key
 
 AWS Secret Access Key
-
-__Note:__ In programmatic use: `secretKey`
 
 ## version
 
 Show version number
 
-__Note:__ Only for command line or package.json script use
-
 ## help
 
 Show help
-
-__Note:__ Only for command line or package.json script use
