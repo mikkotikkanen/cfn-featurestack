@@ -54,9 +54,6 @@ if (yargs.argv.help) {
   process.exit(); /* eslint-disable-line no-process-exit */
 }
 
-// Make sure we have all we need
-yargs.demandOption(['stackname', 'template']);
-
 // Set update notifier
 updateNotifier({
   pkg: pckg,
