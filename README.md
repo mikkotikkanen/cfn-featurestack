@@ -1,6 +1,6 @@
 # cfn-featurestack
 
-Simple utility for creating AWS CloudFormation featurestacks for feature branches
+Simple utility for creating temporary AWS CloudFormation stacks (featurestacks) for feature branches
 
 
 # Configuration
